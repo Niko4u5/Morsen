@@ -176,7 +176,7 @@ void morseChar(char Input) {
 
 
 void morse(String Input) {
-  for (int i=0; i < Input.length(); i++) {
+  for (unsigned int i = 0; i < Input.length(); i++) {
     Serial.print(Input.charAt(i));
     morseChar(Input.charAt(i));
     }

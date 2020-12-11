@@ -22,7 +22,7 @@ void morsedash() {
 
 void morsedot() {
   digitalWrite(laser, HIGH);
-  delay(dash);
+  delay(dot);
   digitalWrite(laser, LOW);
   delay(pause);
 }

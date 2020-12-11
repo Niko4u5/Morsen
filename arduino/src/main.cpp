@@ -1,9 +1,9 @@
 #include <Arduino.h>
 
 #define laser LED_BUILTIN
-#define dot 1000
-#define dash 2000
-#define pause 1000
+#define dot 100
+#define dash 200
+#define pause 100
 
 void setup() {
   // put your setup code here, to run once:
@@ -184,7 +184,7 @@ void morse(String Input) {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  morse("atest");
+  morse(Serial.readString());
   Serial.println();
   delay(1000);
 }

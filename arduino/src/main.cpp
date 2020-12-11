@@ -11,9 +11,8 @@ void setup() {
   pinMode(laser, OUTPUT);
 }
 
-
-
 void morsedash() {
+  Serial.print("-");
   digitalWrite(laser, HIGH);
   delay(dash);
   digitalWrite(laser, LOW);
@@ -21,102 +20,166 @@ void morsedash() {
 }
 
 void morsedot() {
+  Serial.print("•");
   digitalWrite(laser, HIGH);
   delay(dot);
   digitalWrite(laser, LOW);
   delay(pause);
 }
 
-void morse(String Input) {
-  for (int i=0; i < Input.length(); i++) {
-    Serial.print(Input.charAt(i));
-    morseChar(Input.charAt(i));
-    }
+void morsepause() {
+  Serial.println();
+  delay(pause);
 }
 
 void morseChar(char Input) {
   switch(Input) {
     case 'a':
-      morsedots("·−");
+      morsedot();
+      morsedash();
       break;
     case 'b':
-      morsedots("− · · ·");
+      morsedash();
+      morsedot();
+      morsedot();
+      morsedot();
       break;
     case 'c':
-      morsedots("− · − ·");
+      morsedash();
+      morsedot();
+      morsedash();
+      morsedot();
       break;
     case 'd':
-      morsedots("− · ·");
+      morsedash();
+      morsedot();
+      morsedot();
       break;
     case 'e':
-      morsedots("·");
+      morsedot();
       break;
     case 'f':
-      morsedots("· · − ·");
+      morsedot();
+      morsedot();
+      morsedash();
+      morsedot();
       break;
     case 'g':
-      morsedots("− − ·");
+      morsedash();
+      morsedash();
+      morsedot();
       break;
     case 'h':
-      morsedots("· · · ·");
+      morsedot();
+      morsedot();
+      morsedot();
+      morsedot();
       break;
     case 'i':
-      morsedots("· ·");
+      morsedot();
+      morsedot();
       break;
     case 'j':
-      morsedots("· − − −");
+      morsedot();
+      morsedash();
+      morsedash();
+      morsedash();
       break;
     case 'k':
-      morsedots("− · −");
+      morsedash();
+      morsedot();
+      morsedash();
       break;
     case 'l':
-      morsedots("· − · ·");
+      morsedot();
+      morsedash();
+      morsedot();
+      morsedot();
       break;
     case 'm':
-      morsedots("− −");
+      morsedash();
+      morsedash();
       break;
     case 'n':
-      morsedots("− ·");
+      morsedash();
+      morsedot();
       break;
     case 'o':
-      morsedots("− − −");
+      morsedash();
+      morsedash();
+      morsedash();
       break;
     case 'p':
-      morsedots("· − − ·");
+      morsedot();
+      morsedash();
+      morsedash();
+      morsedot();
       break;
     case 'q':
-      morsedots("− − · −");
+      morsedash();
+      morsedot();
+      morsedash();
+      morsedash();
       break;
     case 'r':
-      morsedots("· − ·");
+      morsedot();
+      morsedash();
+      morsedot();
       break;
     case 's':
-      morsedots("· · ·");
+      morsedot();
+      morsedot();
+      morsedot();
       break;
     case 't':
-      morsedots("−");
+      morsedash();
       break;
     case 'u':
-      morsedots("· · −");
+      morsedot();
+      morsedot();
+      morsedash();
       break;
     case 'v':
-      morsedots("· · · −");
+      morsedot();
+      morsedot();
+      morsedot();
+      morsedash();
       break;
     case 'w':
-      morsedots("· − −");
+      morsedot();
+      morsedash();
+      morsedash();
       break;
     case 'x':
-      morsedots("  − · · −");
+      morsedash();
+      morsedot();
+      morsedot();
+      morsedash();
       break;
     case 'y':
-      morsedots("− · − −");
+      morsedash();
+      morsedot();
+      morsedash();
+      morsedash();
       break;
     case 'z':
-      morsedots("− − · ·");
+      morsedash();
+      morsedash();
+      morsedot();
+      morsedot();
       break;
     default:
       Serial.println("Falsches Zeichen");
    }
+   morsepause();
+}
+
+
+void morse(String Input) {
+  for (int i=0; i < Input.length(); i++) {
+    Serial.print(Input.charAt(i));
+    morseChar(Input.charAt(i));
+    }
 }
 
 void loop() {

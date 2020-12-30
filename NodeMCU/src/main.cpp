@@ -2,9 +2,13 @@
 
 int input = A0;
 int lastInput;
+int signal;
+int ;
 
 unsigned long start;
 unsigned long time;
+//unsigned long start;
+//unsigned long time;
 
 #define dot 100
 #define dash 200
@@ -21,40 +25,51 @@ void timesignal(){
     start = millis();
     lastInput = input;
   }
-  
-  if (input <512 && lastInput > 512)
+  else if (input <512 && lastInput > 512)
   {
     lastInput = input;
     time = millis() - start; 
   }
-  
-   if (time == dot)
+
+  if (time == dot)
   {
     Serial.print("•");
+    bitWrite(signal,0,0);
   }
-   else if (time == dash)
-   {
-     Serial.print("-");
-   }
-   
+  else if (time == dash)
+  {
+    Serial.print("-");
+    bitWrite(signal,0,1);
+  }
+  signal << 1;
 }
 
-void timesbreak(){
-  if (input < 512 && lastInput > 512){
+void timebreak(){
+  if (input < 512 && lastInput > 512)
+  {
     start = millis();
     lastInput = input;
   }
-  
-  if (input > 512 && lastInput < 512)
+  else if (input > 512 && lastInput < 512)
   {
     lastInput = input;
     time = millis() - start;
   }
-  
+    
+}
+
+void recievechar(){
+  for (size_t i = 0; time > pause; i++)
+  {
+    timesignal();
+    timebreak();  
+  }
+  timestochar();
+  signal << 8;
 }
 
 void timestochar(){
-  
+ 
 }
 
 void loop() {

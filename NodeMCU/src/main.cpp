@@ -26,11 +26,10 @@ int timesignal(){
 }
 
 int timebreak(){
-  /* returns the time from calling this funktion untile the signal goes low 
-  TODO: dont wait the whole time from a long pause */
+  /* returns the time from calling this funktion untile the signal goes low */
   int start = millis();
 
-  while (analogRead(A0) < cutoff){} // waits until the signal is low.
+  while (analogRead(A0) < cutoff && (millis() - start) < longpause){} // waits until the signal is low.
 
   int time = millis() - start; // sets time to the time since calling this function.
   //Serial.print("Pause: ");
@@ -43,6 +42,8 @@ void timestochar(int charLength, int signal){
   //Serial.println(charLength);
   //Serial.print("signal: ");
   //Serial.println(signal);
+
+  /* prints a character based on its lenght and the signal variable */
 
   if (charLength == 1){
     switch (signal){
@@ -156,19 +157,24 @@ void recievechar(){
   do{
     time = timesignal();
 
-    if (time < (dot+dash)/2)
+    if (time < dot/2){} // If the signal ist to short it does nothing
+    else if (time < (dot+dash)/2) // If the time is smaller then half of both signal lengths together 
       {
-        Serial.print("•");
-        bitWrite(signal,0,0);
+        Serial.print("•"); // it prints a dot
+        bitWrite(signal,0,0); //  writes a 0 at the end of signal
+        signal = signal << 1;  // bitshift by one to the letf
+        charlength++; // adds one to the length of the character
       }
-    else if (time > (dot+dash)/2)
+    else if (time > (dot+dash)/2) // If the time is bigger then half of both signal lengths together 
       {
-        Serial.print("-");
-        bitWrite(signal,0,1);
+        Serial.print("-"); // prints a dash
+        bitWrite(signal,0,1); //  writes a 1 at the end of signal
+        signal = signal << 1; // bitshift by one to the letf
+        charlength++; // adds one to the length of the character
       }
     
-    signal = signal << 1;
-    charlength++;
+    
+    
     
   }while (timebreak() < longpause);
 

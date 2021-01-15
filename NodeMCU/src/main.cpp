@@ -14,7 +14,8 @@ void setup()
 }
 
 int timesignal(){
-  /* returns the time from calling this funktion untile the signal goes low */
+  /* returns the time from calling this funktion untile the signal goes low
+  TODO: dont wait the whole time from a long pause */
   int start = millis(); // saves the curent time into start
 
   while (analogRead(A0) > 512){} // waits until the signal is low.

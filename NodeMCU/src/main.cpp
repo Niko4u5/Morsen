@@ -1,75 +1,43 @@
 #include <Arduino.h>
 
-int input = A0;
-int lastInput;
-int signal;
-int charLength;
-
-unsigned long start;
-unsigned long time;
-//unsigned long start;
-//unsigned long time;
-
+#define input A0
 #define dot 100
 #define dash 200
 #define pause 100
+#define longpause 150
 
 void setup() 
 {
   // put your setup code here, to run once:
   Serial.begin(9600);
+  pinMode(input, INPUT);
 }
 
-void timesignal(){
-  if (input > 512 && lastInput < 512){
-    start = millis();
-    lastInput = input;
-  }
-  else if (input <512 && lastInput > 512)
-  {
-    lastInput = input;
-    time = millis() - start; 
-  }
+int timesignal(){
+  /* returns the time from calling this funktion untile the signal goes low */
+  int start = millis(); // saves the curent time into start
 
-  if (time == dot)
-  {
-    Serial.print("•");
-    bitWrite(signal,0,0);
-  }
-  else if (time == dash)
-  {
-    Serial.print("-");
-    bitWrite(signal,0,1);
-  }
-  signal << 1;
+  while (analogRead(A0) > 512){} // waits until the signal is low.
+
+  int time = millis() - start; // sets time to the time since calling this function.
+  //Serial.print("Signal: ");
+  //Serial.println(time);
+  return time;
 }
 
-void timebreak(){
-  if (input < 512 && lastInput > 512)
-  {
-    start = millis();
-    lastInput = input;
-  }
-  else if (input > 512 && lastInput < 512)
-  {
-    lastInput = input;
-    time = millis() - start;
-  }
-    
+int timebreak(){
+  /* returns the time from calling this funktion untile the signal goes low */
+  int start = millis();
+
+  while (analogRead(A0) < 512){} // waits until the signal is low.
+
+  int time = millis() - start; // sets time to the time since calling this function.
+  //Serial.print("Pause: ");
+  //Serial.println(time);
+  return time;
 }
 
-void recievechar(){
-  for (int i = 0; time > pause; i++)
-  {
-    timesignal();
-    timebreak();
-    i =  charLength; 
-  }
-  timestochar();
-  signal << 8;
-}
-
-void timestochar(){
+void timestochar(int charLength, int signal){
   if (charLength == 1){
     switch (signal){
       case 0:
@@ -173,8 +141,35 @@ void timestochar(){
   }
 }
 
+void recievechar(){
+  int time;
+  int signal;
+  int charlength;
+
+  timebreak();
+  do{
+    time = timesignal();
+
+    if (time < (dot+dash)/2)
+      {
+        Serial.println("•");
+        bitWrite(signal,0,0);
+      }
+    else if (time > (dot+dash)/2)
+      {
+        Serial.println("-");
+        bitWrite(signal,0,1);
+      }
+    
+    signal << 1;
+    charlength++;
+    
+  }while (timebreak() < longpause);
+
+  timestochar(charlength, signal);
+}
+
 void loop() {
   // put your main code here, to run repeatedly:
-   Serial.println(input);
-  recievechar(); 
+   recievechar();
 }

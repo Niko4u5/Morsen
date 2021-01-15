@@ -13,7 +13,7 @@ void setup() {
 
 void morsedash() {
   // outputs a long signal and a pause
-  Serial.print("-"); // creates nice serial output
+  //Serial.print("-"); // creates nice serial output
   digitalWrite(laser, HIGH);
   delay(dash);
   digitalWrite(laser, LOW);
@@ -22,7 +22,7 @@ void morsedash() {
 
 void morsedot() {
   // outputs a short signal and a pause
-  Serial.print("•");// creates nice serial output
+  //Serial.print("•");// creates nice serial output
   digitalWrite(laser, HIGH);
   delay(dot);
   digitalWrite(laser, LOW);
@@ -31,7 +31,7 @@ void morsedot() {
 
 void morsepause() {
   // outputs an pause
-  Serial.println();// creates nice serial output
+  //Serial.println();// creates nice serial output
   delay(pause);
 }
 
@@ -175,7 +175,7 @@ void morseChar(char Input) {
     default:
       morsepause();
       morsepause();
-      Serial.println("Falsches Zeichen"); // Error if you trie to send a invalit character
+      //Serial.println("Falsches Zeichen"); // Error if you trie to send a invalit character
    }
    morsepause(); // between characters the pause has to be longer
 }

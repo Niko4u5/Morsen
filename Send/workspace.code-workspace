@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "..\\NodeMCU"
+		},
+		{
+			"path": "..\\arduino"
+		}
+	],
+	"settings": {}
+}

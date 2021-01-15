@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-#define laser LED_BUILTIN
+#define laser 16
 #define dot 100
 #define dash 200
 #define pause 100

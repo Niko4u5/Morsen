@@ -183,7 +183,7 @@ void morse(String Input) {
   // calles the morseChar function for each char in the input
   for (unsigned int i = 0; i < Input.length(); i++) {
     Serial.print(Input.charAt(i)); // creates nice serial output
-    morseChar(Input.charAt(i)); // call moseChar with the curent character
+    morseChar(Input.charAt(i)); 
     }
 }
 

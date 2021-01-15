@@ -38,6 +38,11 @@ int timebreak(){
 }
 
 void timestochar(int charLength, int signal){
+  //Serial.print("charLength: ");
+  //Serial.println(charLength);
+  //Serial.print("signal: ");
+  //Serial.println(signal);
+
   if (charLength == 1){
     switch (signal){
       case 0:
@@ -142,9 +147,9 @@ void timestochar(int charLength, int signal){
 }
 
 void recievechar(){
-  int time;
-  int signal;
-  int charlength;
+  int time = 0;
+  int signal = 0;
+  int charlength = 0;
 
   timebreak();
   do{
@@ -152,16 +157,16 @@ void recievechar(){
 
     if (time < (dot+dash)/2)
       {
-        Serial.println("•");
+        Serial.print("•");
         bitWrite(signal,0,0);
       }
     else if (time > (dot+dash)/2)
       {
-        Serial.println("-");
+        Serial.print("-");
         bitWrite(signal,0,1);
       }
     
-    signal << 1;
+    signal = signal << 1;
     charlength++;
     
   }while (timebreak() < longpause);

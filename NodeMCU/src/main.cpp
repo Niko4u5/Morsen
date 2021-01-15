@@ -1,10 +1,10 @@
 #include <Arduino.h>
 
-#define input A0
-#define dot 100
-#define dash 200
-#define pause 100
-#define longpause 150
+#define input A0 // the input pin
+#define dot 100 // the time for a short signal
+#define dash 200 // the time for a long signal
+#define longpause 150 // the minimum pause between two characters
+#define cutoff 512 // a number betwen a high and a low signal
 
 void setup() 
 {
@@ -14,11 +14,10 @@ void setup()
 }
 
 int timesignal(){
-  /* returns the time from calling this funktion untile the signal goes low
-  TODO: dont wait the whole time from a long pause */
+  /* returns the time from calling this funktion untile the signal goes low */
   int start = millis(); // saves the curent time into start
 
-  while (analogRead(A0) > 512){} // waits until the signal is low.
+  while (analogRead(A0) > cutoff){} // waits until the signal is low.
 
   int time = millis() - start; // sets time to the time since calling this function.
   //Serial.print("Signal: ");
@@ -27,10 +26,11 @@ int timesignal(){
 }
 
 int timebreak(){
-  /* returns the time from calling this funktion untile the signal goes low */
+  /* returns the time from calling this funktion untile the signal goes low 
+  TODO: dont wait the whole time from a long pause */
   int start = millis();
 
-  while (analogRead(A0) < 512){} // waits until the signal is low.
+  while (analogRead(A0) < cutoff){} // waits until the signal is low.
 
   int time = millis() - start; // sets time to the time since calling this function.
   //Serial.print("Pause: ");

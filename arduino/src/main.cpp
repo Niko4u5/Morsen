@@ -12,7 +12,8 @@ void setup() {
 }
 
 void morsedash() {
-  Serial.print("-");
+  // outputs a long signal and a pause
+  Serial.print("-"); // creates nice serial output
   digitalWrite(laser, HIGH);
   delay(dash);
   digitalWrite(laser, LOW);
@@ -20,7 +21,8 @@ void morsedash() {
 }
 
 void morsedot() {
-  Serial.print("•");
+  // outputs a short signal and a pause
+  Serial.print("•");// creates nice serial output
   digitalWrite(laser, HIGH);
   delay(dot);
   digitalWrite(laser, LOW);
@@ -28,11 +30,13 @@ void morsedot() {
 }
 
 void morsepause() {
-  Serial.println();
+  // outputs an pause
+  Serial.println();// creates nice serial output
   delay(pause);
 }
 
 void morseChar(char Input) {
+  // calls the morsedot and morsedash funktions depending on the character
   switch(Input) {
     case 'a':
       morsedot();
@@ -169,15 +173,16 @@ void morseChar(char Input) {
       morsedot();
       break;
     default:
-      Serial.println("Falsches Zeichen");
+      Serial.println("Falsches Zeichen"); // Error if you trie to send a invalit character
    }
-   morsepause();
+   morsepause(); // between characters the pause has to be longer
 }
 
 
 void morse(String Input) {
+  // calles the morseChar function for each char in the input
   for (unsigned int i = 0; i < Input.length(); i++) {
-    Serial.print(Input.charAt(i));
+    Serial.print(Input.charAt(i)); // creates nice serial output
     morseChar(Input.charAt(i));
     }
 }
@@ -185,6 +190,5 @@ void morse(String Input) {
 void loop() {
   // put your main code here, to run repeatedly:
   morse(Serial.readString());
-  Serial.println();
-  delay(1000);
+  Serial.println(); // creates nice serial output
 }

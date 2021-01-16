@@ -1,23 +1,26 @@
 #include <Arduino.h>
 
-#define input A0 // the input pin
-#define dot 100 // the time for a short signal
-#define dash 200 // the time for a long signal
-#define longpause 150 // the minimum pause between two characters
-#define cutoff 512 // a number betwen a high and a low signal
+#define input A0     // the input pin
+#define dot 1000      // the time for a short signal
+#define dash 2000     // the time for a long signal
+#define pause 1000    // the minimum pause between two characters
+#define cutoff 75   // a number betwen a high and a low signal
 
-void setup() 
+void setup()
 {
   // put your setup code here, to run once:
   Serial.begin(9600);
-  pinMode(input, INPUT);
+  pinMode(input, INPUT_PULLUP);
 }
 
-int timesignal(){
+int timesignal()
+{
   /* returns the time from calling this funktion untile the signal goes low */
-  int start = millis(); // saves the curent time into start
+  unsigned long start = millis(); // saves the curent time into start
 
-  while (analogRead(A0) > cutoff){} // waits until the signal is low.
+  while (analogRead(A0) > cutoff)
+  {
+  } // waits until the signal is low.
 
   int time = millis() - start; // sets time to the time since calling this function.
   //Serial.print("Signal: ");
@@ -25,11 +28,14 @@ int timesignal(){
   return time;
 }
 
-int timebreak(){
+int timebreak()
+{
   /* returns the time from calling this funktion untile the signal goes low */
-  int start = millis();
+  unsigned long start = millis();
 
-  while (analogRead(A0) < cutoff && (millis() - start) < longpause){} // waits until the signal is low.
+  while (analogRead(A0) < cutoff && (millis() - start) < pause * 1.5)
+  {
+  } // waits until the signal is low.
 
   int time = millis() - start; // sets time to the time since calling this function.
   //Serial.print("Pause: ");
@@ -37,40 +43,48 @@ int timebreak(){
   return time;
 }
 
-void timestochar(int charLength, int signal){
+char timestochar(int charLength, int signal)
+{
   //Serial.print("charLength: ");
   //Serial.println(charLength);
   //Serial.print("signal: ");
   //Serial.println(signal);
 
   /* prints a character based on its lenght and the signal variable */
+  if (charLength == 0)
+  {
+    return(' ');
+  }
+  
 
-  if (charLength == 1){
-    switch (signal){
-      case 0:
-        Serial.println('E');
-        break;
-      case 2:
-        Serial.println('T');
-        break;
-    } 
-  }   
+  if (charLength == 1)
+  {
+    switch (signal)
+    {
+    case 0:
+      return('E');
+      break;
+    case 2:
+      return('T');
+      break;
+    }
+  }
 
   if (charLength == 2)
   {
     switch (signal)
     {
     case 0:
-      Serial.println('I');
+      return('I');
       break;
     case 2:
-      Serial.println('A');
+      return('A');
       break;
     case 4:
-      Serial.println('N');  
+      return('N');
       break;
     case 6:
-      Serial.println('M');
+      return('M');
       break;
     }
   }
@@ -80,108 +94,112 @@ void timestochar(int charLength, int signal){
     switch (signal)
     {
     case 0:
-      Serial.println('S');
+      return('S');
       break;
     case 2:
-      Serial.println('U');
+      return('U');
       break;
     case 4:
-      Serial.println('R');
+      return('R');
       break;
     case 6:
-      Serial.println('W');
+      return('W');
       break;
     case 8:
-      Serial.println('D');
+      return('D');
       break;
     case 10:
-      Serial.println('K');
+      return('K');
       break;
     case 12:
-      Serial.println('G');
+      return('G');
       break;
     case 14:
-      Serial.println('O');
+      return('O');
       break;
     }
   }
-  if (charLength == 4){
+  if (charLength == 4)
+  {
     switch (signal)
     {
     case 0:
-      Serial.println('H');
+      return('H');
       break;
     case 2:
-      Serial.println('V');
+      return('V');
       break;
     case 4:
-      Serial.println('F');
+      return('F');
       break;
     case 8:
-      Serial.println('L');
+      return('L');
       break;
     case 12:
-      Serial.println('P');
+      return('P');
       break;
     case 14:
-      Serial.println('J');
+      return('J');
       break;
     case 16:
-      Serial.println('B');
+      return('B');
       break;
     case 18:
-      Serial.println('X');
+      return('X');
       break;
     case 20:
-      Serial.println('C');
-      break; 
+      return('C');
+      break;
     case 22:
-      Serial.println('Y');
+      return('Y');
       break;
     case 24:
-      Serial.println('Z');
+      return('Z');
       break;
     case 26:
-      Serial.println('Q');
+      return('Q');
       break;
     }
   }
 }
 
-void recievechar(){
+void recievechar()
+{
   int time = 0;
   int signal = 0;
   int charlength = 0;
 
   timebreak();
-  do{
+  do
+  {
     time = timesignal();
 
-    if (time < dot/2){} // If the signal ist to short it does nothing
-    else if (time < (dot+dash)/2) // If the time is smaller then half of both signal lengths together 
-      {
-        Serial.print("•"); // it prints a dot
-        bitWrite(signal,0,0); //  writes a 0 at the end of signal
-        signal = signal << 1;  // bitshift by one to the letf
-        charlength++; // adds one to the length of the character
-      }
-    else if (time > (dot+dash)/2) // If the time is bigger then half of both signal lengths together 
-      {
-        Serial.print("-"); // prints a dash
-        bitWrite(signal,0,1); //  writes a 1 at the end of signal
-        signal = signal << 1; // bitshift by one to the letf
-        charlength++; // adds one to the length of the character
-      }
-    
-    
-    
-    
-  }while (timebreak() < longpause);
+    if (time < dot / 2)
+    {
+    }                                 // If the signal ist to short it does nothing
+    else if (time < (dot + dash) / 2) // If the time is smaller then half of both signal lengths together
+    {
+      //Serial.print("•"); // it prints a dot
+      bitWrite(signal, 0, 0); //  writes a 0 at the end of signal
+      signal = signal << 1;   // bitshift by one to the letf
+      charlength++;           // adds one to the length of the character
+    }
+    else if (time > (dot + dash) / 2) // If the time is bigger then half of both signal lengths together
+    {
+      //Serial.print("-"); // prints a dash
+      bitWrite(signal, 0, 1); //  writes a 1 at the end of signal
+      signal = signal << 1;   // bitshift by one to the letf
+      charlength++;           // adds one to the length of the character
+    }
 
-  timestochar(charlength, signal);
+  } while (timebreak() < pause *1.5);
+
+  Serial.print(timestochar(charlength, signal));
 }
 
-void loop() {
+void loop()
+{
   // put your main code here, to run repeatedly:
-   recievechar();
+  Serial.println(analogRead(A0));
+  //recievechar();
 }

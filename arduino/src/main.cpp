@@ -182,6 +182,7 @@ void morseChar(char Input) {
 
 
 void morse(String Input) {
+  Input.toLowerCase(); // converts the input to lower case
   // calles the morseChar function for each char in the input
   for (unsigned int i = 0; i < Input.length(); i++) {
     Serial.print(Input.charAt(i)); // creates nice serial output
@@ -191,7 +192,7 @@ void morse(String Input) {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  //morse(Serial.readString());
-  morse("hello world");
+  morse(Serial.readString());
+  //morse("hello world");
   //Serial.println(); // creates nice serial output
 }

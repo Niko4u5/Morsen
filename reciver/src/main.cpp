@@ -1,10 +1,10 @@
 #include <Arduino.h>
 
 #define input A0     // the input pin
-#define dot 1000      // the time for a short signal
-#define dash 2000     // the time for a long signal
-#define pause 1000    // the minimum pause between two characters
-#define cutoff 75   // a number betwen a high and a low signal
+#define dot 100      // the time for a short signal
+#define dash 200     // the time for a long signal
+#define pause 100    // the minimum pause between two characters
+#define cutoff 100   // a number betwen a high and a low signal
 
 void setup()
 {
@@ -18,7 +18,7 @@ int timesignal()
   /* returns the time from calling this funktion untile the signal goes low */
   unsigned long start = millis(); // saves the curent time into start
 
-  while (analogRead(A0) > cutoff)
+  while (analogRead(A0) < cutoff)
   {
   } // waits until the signal is low.
 
@@ -33,7 +33,7 @@ int timebreak()
   /* returns the time from calling this funktion untile the signal goes low */
   unsigned long start = millis();
 
-  while (analogRead(A0) < cutoff && (millis() - start) < pause * 1.5)
+  while (analogRead(A0) > cutoff && (millis() - start) < pause * 1.5)
   {
   } // waits until the signal is low.
 
@@ -51,11 +51,6 @@ char timestochar(int charLength, int signal)
   //Serial.println(signal);
 
   /* prints a character based on its lenght and the signal variable */
-  if (charLength == 0)
-  {
-    return(' ');
-  }
-  
 
   if (charLength == 1)
   {
@@ -161,6 +156,7 @@ char timestochar(int charLength, int signal)
       break;
     }
   }
+  return('-');
 }
 
 void recievechar()
@@ -200,6 +196,6 @@ void recievechar()
 void loop()
 {
   // put your main code here, to run repeatedly:
-  Serial.println(analogRead(A0));
-  //recievechar();
+  //Serial.println(analogRead(A0));
+  recievechar();
 }

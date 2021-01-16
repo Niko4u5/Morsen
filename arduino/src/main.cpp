@@ -1,9 +1,9 @@
 #include <Arduino.h>
 
 #define laser 16
-#define dot 50
-#define dash 100
-#define pause 50
+#define dot 100
+#define dash 200
+#define pause 100
 
 void setup() {
   // put your setup code here, to run once:
@@ -191,6 +191,7 @@ void morse(String Input) {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  morse(Serial.readString());
+  //morse(Serial.readString());
+  morse("hello world");
   //Serial.println(); // creates nice serial output
 }
